@@ -3,8 +3,12 @@ import cv2 as cv
 
 import os, pathlib
 import torch
+import pyautogui
 from utils.timer import Timer
 from face_utils import load_faceboxes, get_facebox_coords
+
+pyautogui.FAILSAFE = True
+pyautogui.MINIMUM_DURATION = 0.001
 
 # ================== OpenCV Video Capture =================== #
 cap = cv.VideoCapture(0)
@@ -18,6 +22,13 @@ font = cv.FONT_HERSHEY_SIMPLEX
 net = load_faceboxes()
 
 _t = {'fps': Timer()}
+
+# Mouse Control with pyautogui
+x = pyautogui.size()[0] * 0.75   # three quarters width
+y = pyautogui.size()[1] * 0.5    # half height
+pyautogui.moveTo(x, y, duration=0)
+pyautogui.mouseDown()
+trigger = 0
 
 while True:
     _t['fps'].tic()
@@ -35,7 +46,7 @@ while True:
     # Add vertical blinds
     y1 = int(frame.shape[1] * 0.4)
     y2 = int(frame.shape[1] * 0.6)
-    cv.rectangle(frame, (y1, 0), (y2, frame.shape[0]), color=(25,25,25), thickness=-1)
+    cv.rectangle(frame, (y1, 0), (y2, frame.shape[0]), color=(25,25,25), thickness=-1) 
 
     # Loop bounding boxes
     for det in dets:
@@ -53,9 +64,22 @@ while True:
         if (centroid < y2) & (centroid > y1):
             cv.circle(frame, (centroid, ymin-25), 15, color=(30,200,30), thickness=-1, lineType=cv.LINE_AA)
 
-    # Image operations dev
+            # Mouse Control with pyautogui
+            if trigger == 0:
+                x = pyautogui.size()[0] * 0.75    # width
+                y = pyautogui.size()[1] * 0.5     # height
+                pyautogui.moveTo(x, y)
+                pyautogui.dragTo(x+500, y, duration=0.05)
+                trigger = 1
+
+        elif trigger == 1:  # reset trigger if bounding box exits area
+            trigger = 0
+
+    # Image Resize for dev
     outframe = cv.resize(frame, None, fx=0.4, fy=0.4)
-    # outframe = cv.cvtColor(outframe, cv.COLOR_BGR2GRAY)
+    bw = False
+    if bw:
+        outframe = cv.cvtColor(outframe, cv.COLOR_BGR2GRAY)
 
     # Render FPS
     _t['fps'].toc()
