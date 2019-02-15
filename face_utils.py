@@ -24,7 +24,7 @@ def load_faceboxes():
 
 
 
-def get_facebox_coords(img, net):
+def get_facebox_coords(img, net, verbose=False):
     """
     Evaluates faceboxes forward pass and NMS
         returns dets, faceboxes array of [x1, x2, y1, y2, score]
@@ -75,8 +75,9 @@ def get_facebox_coords(img, net):
     scores = scores[order]
 
     # Number of output predictions after thresholding
-    print('boxes after threshold:', len(scores))
-    print('forward pass: {:.4f} s'.format(_t['forward_pass'].average_time))
+    if verbose:
+        print('boxes after threshold:', len(scores))
+        print('forward pass: {:.4f} s'.format(_t['forward_pass'].average_time))
 
     # ================= Note: NMS implemented ===================== #
 
@@ -94,7 +95,8 @@ def get_facebox_coords(img, net):
 
     if len(dets.shape) == 1:  # edge case where nms has a single return
         dets = [dets]
-        
-    print('Applying Non-Max Supression \nFace boxes:', len(dets))
-    print('Forward pass and nms: {:.4f} s'.format(_t['nms'].average_time))
+    
+    if verbose:
+        print('Applying Non-Max Supression \nFace boxes:', len(dets))
+        print('Forward pass and nms: {:.4f} s'.format(_t['nms'].average_time))
     return dets

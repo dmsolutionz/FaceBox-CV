@@ -55,7 +55,7 @@ while True:
         ymax = int(round(det[3]))
         score = det[4]
         # Draw bounding box
-        print(xmin, ymin, xmax, ymax)
+        # print(xmin, ymin, xmax, ymax)
         cv.rectangle(frame, (xmin,ymin), (xmax,ymax), color=(188,188,188), thickness=2, lineType=cv.LINE_AA)
 
         # Event condition on highest-score facebox
