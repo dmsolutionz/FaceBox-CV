@@ -26,8 +26,12 @@ _t = {'fps': Timer()}
 # Mouse Control with pyautogui
 x = pyautogui.size()[0] * 0.7    # width
 y = pyautogui.size()[1] * 0.9     # height
+x_pos = x
 pyautogui.moveTo(x, y)
 trigger = 0
+SPIN = False
+last_centroid = 0
+
 
 while True:
     _t['fps'].tic()
@@ -43,8 +47,8 @@ while True:
     cv.rectangle(frame, (0,0), (frame.shape[1],frame.shape[0]), color=(0,0,0), thickness=-1)
 
     # Add vertical blinds
-    y1 = int(frame.shape[1] * 0.4)
-    y2 = int(frame.shape[1] * 0.6)
+    y1 = int(frame.shape[1] * 0.2)
+    y2 = int(frame.shape[1] * 0.8)
     cv.rectangle(frame, (y1, 0), (y2, frame.shape[0]), color=(25,25,25), thickness=-1) 
 
     # Loop bounding boxes
@@ -65,13 +69,25 @@ while True:
                 cv.circle(frame, (centroid, ymin-25), 15, color=(30,200,30), thickness=-1, lineType=cv.LINE_AA)
 
                 # Mouse Control with pyautogui
-                if trigger == 0:
-                    pyautogui.dragTo(x+500, y, duration=0.05)
-                    trigger = 1
+                if SPIN:  # triggers 360 spin 
+                    if trigger == 0:
+                        pyautogui.dragTo(x+500, y, duration=0.05)
+                        trigger = 1
+
+
+                # ----- Tracking face movement to 1:1 mapping of mouse movement
+                pos = centroid - last_centroid
+                if pos != 0:
+                    x_pos += pos * -1.5
+                    pyautogui.dragTo(x_pos, y, duration=0.05)
+                # -----
+
 
             elif trigger == 1:  # reset trigger if bounding box exits area
                 trigger = 0
                 pyautogui.moveTo(x, y)
+
+            last_centroid = centroid
 
     # Image Resize for dev
     outframe = cv.resize(frame, None, fx=0.4, fy=0.4)
