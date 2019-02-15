@@ -24,7 +24,7 @@ net = load_faceboxes()
 _t = {'fps': Timer()}
 
 # Mouse Control with pyautogui
-x = pyautogui.size()[0] * 0.78    # width
+x = pyautogui.size()[0] * 0.7    # width
 y = pyautogui.size()[1] * 0.9     # height
 pyautogui.moveTo(x, y)
 trigger = 0
@@ -54,8 +54,8 @@ while True:
         xmax = int(round(det[2]))
         ymax = int(round(det[3]))
         score = det[4]
-        print(xmin, ymin, xmax, ymax)
         # Draw bounding box
+        print(xmin, ymin, xmax, ymax)
         cv.rectangle(frame, (xmin,ymin), (xmax,ymax), color=(188,188,188), thickness=2, lineType=cv.LINE_AA)
 
         # Event condition on highest-score facebox
