@@ -1,42 +1,34 @@
-import numpy as np
-import cv2 as cv
-from glob import glob   
+import cv2
+from collections import OrderedDict
 
-import os, pathlib
-# import torch
-from utils.timer import Timer
-from face_utils import load_faceboxes, get_facebox_coords
-                                                        
+# Create VideoCapture object from input file
+cap = cv2.VideoCapture('data/JC_C_Reshoot_06_single_1080x1620.mp4')
+vd = OrderedDict()
+i = 0
 
-# ================== OpenCV Video Capture =================== #
-cap = cv.VideoCapture(0)
-print('Frame width:', int(cap.get(cv.CAP_PROP_FRAME_WIDTH)))
-print('Frame height:', int(cap.get(cv.CAP_PROP_FRAME_HEIGHT)))
-print('Capture frame rate:', cap.get(cv.CAP_PROP_FPS))
-font = cv.FONT_HERSHEY_SIMPLEX
-# =========================================================== #
-
-# Initialize facesboxes model
-# net = load_faceboxes()
-
-_t = {'fps': Timer()}
-
-# load 360s
-print('loading 360')
-jpgs = glob("./data/afv_100/*.jpg")
-img_set = []
-for j in jpgs:
-    img_set.append(cv.imread(j))
-print(f"{len(img_set)} frames loaded")
-
-for img in img_set:
-
-    # Image Resize for dev
-    outframe = cv.resize(img, None, fx=0.4, fy=0.4)
-
-    cv.imshow('frame', outframe)
-
-    key = cv.waitKey(100)  # pause for 100 ms
-    if key == 27:  # if ESC is pressed, exit loop
-        cv.destroyAllWindows()
+while(cap.isOpened()):
+    # Capture frame-by-frame
+    ret, frame = cap.read()
+    if ret is True:
+        vd[i] = frame
+        cv2.imshow('Frame', frame)
+        key = cv2.waitKey(100)
+    else:
         break
+    i += + 1
+print(len(vd), 'frames loaded')
+
+
+# for img in vd:
+
+#     # Image Resize for dev
+#     # outframe = cv.resize(img, None, fx=0.4, fy=0.4)
+
+#     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+#     cv2.imshow('frame', img)
+
+#     key = cv2.waitKey(100)  # pause for 100 ms
+#     if key == 27:  # if ESC is pressed, exit loop
+#         cv2.destroyAllWindows()
+#         break
