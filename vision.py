@@ -11,8 +11,10 @@ from face_utils import load_faceboxes, get_facebox_coords
 
 # ================== OpenCV Video Capture =================== #
 cap = cv.VideoCapture(0)
-print('Frame width:', int(cap.get(cv.CAP_PROP_FRAME_WIDTH)))
-print('Frame height:', int(cap.get(cv.CAP_PROP_FRAME_HEIGHT)))
+frame_width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
+frame_height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
+print('Frame width:', frame_width)
+print('Frame height:', frame_height)
 print('Capture frame rate:', cap.get(cv.CAP_PROP_FPS))
 font = cv.FONT_HERSHEY_SIMPLEX
 # =========================================================== #
@@ -64,7 +66,13 @@ while True:
     ret, frame = cap.read()
     frame = cv.flip(frame, 1)
 
-    # Get bounding boxes from NN foward-pass
+    # CROP TO CENTER IMAGE for passing to nn
+    # c1 = frame_height/4
+    # c2 = frame_width/4
+    # y1, y2 = int(c1), int(frame_height/2 + c1)
+    # x1, x2 = int(c2), int(frame_width/2 + c2)
+    # frame_nn = cv.resize(frame[y1:y2, x1:x2], None, fx=0.5, fy=0.5)
+
     frame = cv.resize(frame, None, fx=0.3, fy=0.3)
     dets = get_facebox_coords(frame, net)
 
@@ -74,7 +82,7 @@ while True:
     # Add vertical blinds
     y1 = int(frame.shape[1] * 0.3)
     y2 = int(frame.shape[1] * 0.7)
-    cv.rectangle(frame, (y1, 0), (y2, frame.shape[0]), color=(25,25,25), thickness=-1) 
+    cv.rectangle(frame, (y1, 0), (y2, frame.shape[0]), color=(25,25,25), thickness=-1)
 
     # Loop bounding boxes
     for i, det in enumerate(dets):
