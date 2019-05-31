@@ -28,16 +28,16 @@ frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 print('\nOutput', frame_width, 'x', frame_height)
 
-out = cv2.VideoWriter('data/output.mp4',
+out = cv2.VideoWriter('data/JC_C_Reshoot_06_single_1080x860.mp4',
                       0x7634706d,
                       24.0,
-                      (frame_width, 840))
+                      (frame_width, 860))
 
 # Write the frame into the file 'output.avi'
 for k in range(i):
     # Crop tall video
     # ---------------------------------- #
-    y1, y2 = 780, 1620
+    y1, y2 = 760, 1620
     x1, x2 = 0, 1080
     outframe = vd[k][y1:y2, x1:x2].copy()
     # cv2.imshow('frame', outframe)
