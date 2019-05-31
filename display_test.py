@@ -6,7 +6,8 @@ cap = cv2.VideoCapture('data/JC_C_Reshoot_06_single_1080x1620.mp4')
 vd = OrderedDict()
 i = 0
 
-print('loading mp4')
+
+print('Loading mp4')
 while(cap.isOpened()):
     # Capture frame-by-frame
     ret, frame = cap.read()
@@ -15,15 +16,36 @@ while(cap.isOpened()):
     else:
         break
     i += + 1
+
 print(len(vd), 'frames loaded')
 
+# ------------------------------------------------ #
+#                 Write to MP4
+# ------------------------------------------------ #
 
-for i in range(200):
+# Default resolutions of the frame are obtained.The default resolutions are system dependent.
+frame_width = int(cap.get(3))
+frame_height = int(cap.get(4))
+print('\nOutput', frame_width, 'x', frame_height)
 
-    # Image Resize for dev
-    # outframe = cv.resize(img, None, fx=0.4, fy=0.4)
+out = cv2.VideoWriter('data/output.mp4',
+                      0x7634706d,
+                      24.0,
+                      (frame_width, 840))
 
-    img = vd[i]
-    cv2.imshow('frame', img)
-    key = cv2.waitKey(20)
+# Write the frame into the file 'output.avi'
+for k in range(i):
+    # Crop tall video
+    # ---------------------------------- #
+    y1, y2 = 780, 1620
+    x1, x2 = 0, 1080
+    outframe = vd[k][y1:y2, x1:x2].copy()
+    # cv2.imshow('frame', outframe)
+    # key = cv2.waitKey(3000)
+    # ---------------------------------- #
+    out.write(outframe)
 
+print('\t', len(vd), 'frames')
+# release video and write objects
+out.release()
+cap.release()
