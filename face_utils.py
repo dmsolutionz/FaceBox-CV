@@ -7,7 +7,7 @@ from layers.functions.prior_box import PriorBox
 from models.faceboxes import FaceBoxes
 from utils.box_utils import decode
 from utils.timer import Timer
-from utils.custom import nms_cpu, check_keys, load_model, remove_prefix
+from utils.custom import nms_cpu, load_model
 
 
 def load_faceboxes():

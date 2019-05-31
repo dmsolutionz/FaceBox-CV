@@ -20,6 +20,7 @@ font = cv.FONT_HERSHEY_SIMPLEX
 # Initialize facesboxes model
 net = load_faceboxes()
 _t = {'fps': Timer()}
+_nn = {'fps': Timer()}
 trigger = 0
 SPIN = False
 last_centroid = 0
@@ -50,6 +51,7 @@ print(len(vd), 'frames loaded')
 
 # Initialise starting media frame
 index = 0
+home_index = 0
 m_len = len(vd)
 
 while True:
@@ -61,7 +63,13 @@ while True:
     frame = cv.flip(frame, 1)
 
     # Get bounding boxes from NN foward-pass
-    dets = get_facebox_coords(frame, net)
+    dets = [[374.66824  , 136.84686  , 477.49466  , 273.51694  ,   0.9998166]]
+
+    # _nn['fps'].tic()
+    # dets = get_facebox_coords(frame, net)
+    # _nn['fps'].toc()
+    # fps = 'Facebox NN FPS: {:.3f}'.format(1 / _nn['fps'].diff)
+    # print(fps)
 
     # Masking Dev only
     cv.rectangle(frame, (0,0), (frame.shape[1],frame.shape[0]), color=(0,0,0), thickness=-1)
@@ -92,9 +100,9 @@ while True:
                 # 2. Tracking face movement for 360 control
                 pos = centroid - last_centroid
 
-                if abs(pos) > 1:  # Trigger change of media frame if facebox moves > 5 frames
-                    index += int(pos/5)
-                    index = index % m_len  # take modulus to allow looping
+                if abs(pos) > 0:  # Trigger change of media frame if facebox moves > 5 frames
+                    index += int(pos/4)
+                    index = index % (m_len - 1)  # take modulus to allow looping
                     m_frame = vd[index]
                 # -----------------------------------
 
@@ -104,8 +112,6 @@ while True:
 
             last_centroid = centroid
 
-
-    # 
     # Image Resize for dev
     outframe = cv.resize(frame, None, fx=0.4, fy=0.4)
     bw = False
@@ -123,15 +129,15 @@ while True:
     m_frame = cv.resize(m_frame, None, fx=0.6, fy=0.6)
     cv.imshow('Media Output', m_frame)
 
-
-    if cv.waitKey(1) & 0xFF == 27:
-        break  # esc to quit
-    if cv.waitKey(1) & 0xFF == 'r':
-        index = 0  # esc to quit
+    k = cv.waitKey(1) & 0xFF
+    if k == 27:  # ESC TO QUIT
+        break
+    elif k == ord('r'):   # RESET ORIENTATION
+        print('Key press: R\t Resetting Orientation')
+        index = home_index
+    elif k == ord('t'):
+        print('Key press: T\t Home index increased')
+        home_index += 12
 
 cap.release()
 cv.destroyAllWindows()
-
-
-
-
