@@ -14,12 +14,13 @@ def load_faceboxes():
     """
     Load FaceBoxes model and weight in pytorch
     """
-
+    print('---------------------------------------------------')
     pretrained_path = 'weights/FaceBoxes.pth'
     net = FaceBoxes(phase='test', size=None, num_classes=2)    # initialize detector
     net = load_model(net, pretrained_path)
     net.eval()
     print('Finished loading model')
+    print('---------------------------------------------------')
     return net.cpu()
 
 

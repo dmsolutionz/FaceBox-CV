@@ -35,10 +35,11 @@ if MEDIA_TYPE == "images":
         vd[i] = cv.imread(j)
 
 elif MEDIA_TYPE == "video":
-    vid_cap = cv.VideoCapture('data/JC_C_Reshoot_06_single_1080x860.mp4')
+    vid_path = 'data/JC_06_single_1080x860_4x.mp4'
+    vid_cap = cv.VideoCapture(vid_path)
     vd = OrderedDict()
     i = 0
-    print('\nLoading mp4')
+    print('\nLoading media:', vid_path)
     while(vid_cap.isOpened()):
         # Capture frame-by-frame
         ret, frame = vid_cap.read()
@@ -51,27 +52,28 @@ print(len(vd), 'frames loaded')
 
 # Initialise starting media frame
 index = 0
-home_index = 0
+home_index = 108
 m_len = len(vd)
 
 while True:
     _t['fps'].tic()
     m_frame = vd[index]
+    inside_activated = False
 
     # Capture frame and mirror horizontal
     ret, frame = cap.read()
     frame = cv.flip(frame, 1)
 
     # Get bounding boxes from NN foward-pass
-    frame = cv.resize(frame, None, fx=0.4, fy=0.4)
+    frame = cv.resize(frame, None, fx=0.3, fy=0.3)
     dets = get_facebox_coords(frame, net)
 
     # Masking Dev only
     cv.rectangle(frame, (0,0), (frame.shape[1], frame.shape[0]), color=(0,0,0), thickness=-1)
 
     # Add vertical blinds
-    y1 = int(frame.shape[1] * 0.2)
-    y2 = int(frame.shape[1] * 0.8)
+    y1 = int(frame.shape[1] * 0.3)
+    y2 = int(frame.shape[1] * 0.7)
     cv.rectangle(frame, (y1, 0), (y2, frame.shape[0]), color=(25,25,25), thickness=-1) 
 
     # Loop bounding boxes
@@ -82,13 +84,13 @@ while True:
         ymax = int(round(det[3]))
         score = det[4]
         # Draw bounding box
-        # print(xmin, ymin, xmax, ymax)
         cv.rectangle(frame, (xmin,ymin), (xmax,ymax), color=(188,188,188), thickness=2, lineType=cv.LINE_AA)
 
         # Event condition on highest-score facebox
         if i == 0:
             centroid = int((xmin + xmax) / 2)
             if (centroid < y2) & (centroid > y1):
+                inside_activated = True
                 cv.circle(frame, (centroid, ymin-25), 10, color=(30,200,30), thickness=-1, lineType=cv.LINE_AA)
 
                 # -----------------------------------
@@ -96,20 +98,21 @@ while True:
                 pos = centroid - last_centroid
 
                 if abs(pos) > 0:  # Trigger change of media frame if facebox position moves
-                    index += int(pos)
+                    index += int(pos*2)
                     index = index % (m_len - 1)  # take modulus to allow looping
                     m_frame = vd[index]
                 # -----------------------------------
 
-            elif trigger == 1:  # reset trigger if bounding box exits area
-                trigger = 0
-                # pyautogui.moveTo(x, y)
-
             last_centroid = centroid
 
+    if inside_activated == False:  # Spin slowly if no face is in frame
+        index += 4
+        index = index % (m_len - 1)
+        m_frame = vd[index]
+    
     # Image Resize for dev
-    # outframe = cv.resize(frame, None, fx=0.4, fy=0.4)
-    outframe = frame
+    outframe = cv.resize(frame, None, fx=1.5, fy=1.5)
+    # outframe = frame
     bw = False
     if bw:
         outframe = cv.cvtColor(outframe, cv.COLOR_BGR2GRAY)
@@ -132,7 +135,7 @@ while True:
         print('Key press: R\t Resetting Orientation')
         index = home_index
     elif k == ord('t'):
-        print('Key press: T\t Home index increased')
+        print('Key press: T\t Home index increased +12 frames')
         home_index += 12
 
 cap.release()
