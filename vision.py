@@ -63,16 +63,11 @@ while True:
     frame = cv.flip(frame, 1)
 
     # Get bounding boxes from NN foward-pass
-    dets = [[374.66824  , 136.84686  , 477.49466  , 273.51694  ,   0.9998166]]
-
-    # _nn['fps'].tic()
-    # dets = get_facebox_coords(frame, net)
-    # _nn['fps'].toc()
-    # fps = 'Facebox NN FPS: {:.3f}'.format(1 / _nn['fps'].diff)
-    # print(fps)
+    frame = cv.resize(frame, None, fx=0.4, fy=0.4)
+    dets = get_facebox_coords(frame, net)
 
     # Masking Dev only
-    cv.rectangle(frame, (0,0), (frame.shape[1],frame.shape[0]), color=(0,0,0), thickness=-1)
+    cv.rectangle(frame, (0,0), (frame.shape[1], frame.shape[0]), color=(0,0,0), thickness=-1)
 
     # Add vertical blinds
     y1 = int(frame.shape[1] * 0.2)
@@ -94,14 +89,14 @@ while True:
         if i == 0:
             centroid = int((xmin + xmax) / 2)
             if (centroid < y2) & (centroid > y1):
-                cv.circle(frame, (centroid, ymin-25), 15, color=(30,200,30), thickness=-1, lineType=cv.LINE_AA)
+                cv.circle(frame, (centroid, ymin-25), 10, color=(30,200,30), thickness=-1, lineType=cv.LINE_AA)
 
                 # -----------------------------------
                 # 2. Tracking face movement for 360 control
                 pos = centroid - last_centroid
 
-                if abs(pos) > 0:  # Trigger change of media frame if facebox moves > 5 frames
-                    index += int(pos/4)
+                if abs(pos) > 0:  # Trigger change of media frame if facebox position moves
+                    index += int(pos)
                     index = index % (m_len - 1)  # take modulus to allow looping
                     m_frame = vd[index]
                 # -----------------------------------
@@ -113,7 +108,8 @@ while True:
             last_centroid = centroid
 
     # Image Resize for dev
-    outframe = cv.resize(frame, None, fx=0.4, fy=0.4)
+    # outframe = cv.resize(frame, None, fx=0.4, fy=0.4)
+    outframe = frame
     bw = False
     if bw:
         outframe = cv.cvtColor(outframe, cv.COLOR_BGR2GRAY)
@@ -126,7 +122,7 @@ while True:
     # Display frames
     cv.imshow('Headtracking', outframe)
 
-    m_frame = cv.resize(m_frame, None, fx=0.6, fy=0.6)
+    m_frame = cv.resize(m_frame, None, fx=0.8, fy=0.8)
     cv.imshow('Media Output', m_frame)
 
     k = cv.waitKey(1) & 0xFF
