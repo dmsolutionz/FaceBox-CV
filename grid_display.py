@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import math
+
 
 def grdifiy_four(image):
     """
@@ -13,6 +13,7 @@ def grdifiy_four(image):
     """
     # Add to bw and make the grey scale image have three channels
     grey = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+    grey = cv2.flip(grey, 1)
     grey_3_channel = cv2.cvtColor(grey, cv2.COLOR_GRAY2BGR)
 
     hstack_1 = np.hstack((image, grey_3_channel))
