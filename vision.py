@@ -56,6 +56,7 @@ print(len(vd), 'frames loaded')
 index = 0
 home_index = 108
 m_len = len(vd)
+col_index = 0
 
 while True:
     _t['fps'].tic()
@@ -77,13 +78,14 @@ while True:
     dets = get_facebox_coords(frame, net)
     
     # Masking Dev only
-    cv2.rectangle(frame, (0,0), (frame.shape[1], frame.shape[0]), color=(0,0,0), thickness=-1)
+    cv2.rectangle(frame, (0,0), (frame.shape[1], frame.shape[0]), color=(25,25,25), thickness=-1)
 
     # Add vertical blinds
-    y1 = int(frame.shape[1] * 0.3)
-    y2 = int(frame.shape[1] * 0.7)
-    cv2.rectangle(frame, (y1, 0), (y2, frame.shape[0]), color=(25,25,25), thickness=-1)
-
+    y1 = int(frame.shape[1] * 0.0)
+    y2 = int(frame.shape[1] * 1.0)
+    cv2.rectangle(frame, (y1, 0), (y2, frame.shape[0]), color=(0,0,0), thickness=-1)
+    # cv2.rectangle(frame, (y2, 0), (y2, frame.shape[0]), color=(0,0,0), thickness=-1)
+    
     # Loop bounding boxes
     for i, det in enumerate(dets):
         xmin = int(round(det[0]))
@@ -130,11 +132,15 @@ while True:
     fps = 'FPS: {:.3f}'.format(1 / _t['fps'].diff)
     cv2.putText(outframe, fps, (11,23), font, 0.35, (255,255,255), 1, cv2.LINE_AA)
 
-    # Display frames
+    # Display headtracking frame
     cv2.imshow('Headtracking', outframe)
+    
+    # Change to HSV and mess with hue value
+    # m_frame = cv2.cvtColor(m_frame, cv2.COLOR_BGR2HSV)
+    # m_frame[:,:,2]
+    # m_frame[:,:,:] = col_index % 255
 
     m_frame = cv2.resize(m_frame, None, fx=0.5, fy=0.5)
-
     four_up = grdifiy_four(m_frame)
     cv2.imshow('Media Output', four_up)
 
