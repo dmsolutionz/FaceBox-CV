@@ -6,7 +6,7 @@ import torch
 
 from utils.timer import Timer
 from face_utils import load_faceboxes, get_facebox_coords
-from grid_display import grdifiy_four
+from grid_display import gridifiy_four
 
 
 # ================== OpenCV Video Capture =================== #
@@ -67,25 +67,25 @@ while True:
     ret, frame = cap.read()
     frame = cv2.flip(frame, 1)
 
-    # CROP TO CENTER IMAGE for passing to nn
-    # c1 = frame_height/4
-    # c2 = frame_width/4
-    # y1, y2 = int(c1), int(frame_height/2 + c1)
-    # x1, x2 = int(c2), int(frame_width/2 + c2)
-    # frame_nn = cv2.resize(frame[y1:y2, x1:x2], None, fx=0.5, fy=0.5)
+    # Crop image to central/top area
+    # (optimises foward-pass speed and overall FPS)
+    c1 = frame_height * 0.7  # % Kept from top
+    c2 = frame_width * 0.2   # % removed from each side
+    y1, y2 = 0, int(c1)
+    x1, x2 = int(c2), int(frame_width - c2)
+    frame = cv2.resize(frame[y1:y2, x1:x2], None, fx=0.8, fy=0.8)
 
-    frame = cv2.resize(frame, None, fx=0.3, fy=0.3)
+    # frame = cv2.resize(frame, None, fx=0.3, fy=0.3)
     dets = get_facebox_coords(frame, net)
-    
-    # Masking Dev only
-    cv2.rectangle(frame, (0,0), (frame.shape[1], frame.shape[0]), color=(25,25,25), thickness=-1)
+
+    # Black mask for dev
+    cv2.rectangle(frame, (0, 0), (frame.shape[1], frame.shape[0]), color=(25, 25, 25), thickness=-1)
 
     # Add vertical blinds
-    y1 = int(frame.shape[1] * 0.0)
-    y2 = int(frame.shape[1] * 1.0)
-    cv2.rectangle(frame, (y1, 0), (y2, frame.shape[0]), color=(0,0,0), thickness=-1)
-    # cv2.rectangle(frame, (y2, 0), (y2, frame.shape[0]), color=(0,0,0), thickness=-1)
-    
+    y1 = int(frame.shape[1] * 0.0)  # previously 0.3
+    y2 = int(frame.shape[1] * 1.0)  # previously 0.7
+    #cv2.rectangle(frame, (y1, 0), (y2, frame.shape[0]), color=(0, 0, 0), thickness=-1)
+
     # Loop bounding boxes
     for i, det in enumerate(dets):
         xmin = int(round(det[0]))
@@ -120,17 +120,19 @@ while True:
         index = index % (m_len - 1)
         m_frame = vd[index]
     
-    # Image Resize for dev
-    outframe = cv2.resize(frame, None, fx=1.5, fy=1.5)
-    # outframe = frame
-    bw = False
+    # Resize webcam output for dev
+    outframe = cv2.resize(frame, None, fx=1.2, fy=1.2)
+    bw = True
     if bw:
         outframe = cv2.cvtColor(outframe, cv2.COLOR_BGR2GRAY)
 
     # Render FPS
     _t['fps'].toc()
     fps = 'FPS: {:.3f}'.format(1 / _t['fps'].diff)
-    cv2.putText(outframe, fps, (11,23), font, 0.35, (255,255,255), 1, cv2.LINE_AA)
+    cv2.putText(outframe, fps, (11, 15), font, 0.35, (255, 255, 255), 1, cv2.LINE_AA)
+    res = 'NN-res: {}x{}'.format(frame.shape[0], frame.shape[1])
+    cv2.putText(outframe, res, (11, 33), font, 0.35, (255, 255, 255), 1, cv2.LINE_AA)
+    
 
     # Display headtracking frame
     cv2.imshow('Headtracking', outframe)
@@ -141,7 +143,7 @@ while True:
     # m_frame[:,:,:] = col_index % 255
 
     m_frame = cv2.resize(m_frame, None, fx=0.5, fy=0.5)
-    four_up = grdifiy_four(m_frame)
+    four_up = gridifiy_four(m_frame)
     cv2.imshow('Media Output', four_up)
 
     k = cv2.waitKey(1) & 0xFF

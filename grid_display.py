@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-def grdifiy_four(image):
+def gridifiy_four(image):
     """
     Function takes an OpenCV image and returns a grid with B&W pattern
 
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     image = cv2.imread('data/lfw_2018.JPG')
     image = cv2.resize(image, (0, 0), None, .5, .5)
 
-    four_up = grdifiy_four(image)
+    four_up = gridifiy_four(image)
 
     cv2.imshow('4-up Grid', four_up)
     cv2.waitKey()
