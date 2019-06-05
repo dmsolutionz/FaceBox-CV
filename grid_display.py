@@ -11,6 +11,8 @@ def gridifiy_four(image):
 
     image = cv2.imread('data/lfw_2018.JPG')
     """
+    image = cv2.resize(image, None, fx=0.5, fy=0.5)
+
     # Add to bw and make the grey scale image have three channels
     grey = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     grey = cv2.flip(grey, 1)

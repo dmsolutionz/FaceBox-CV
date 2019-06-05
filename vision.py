@@ -1,8 +1,6 @@
 import cv2
-from glob import glob  
+from glob import glob
 from collections import OrderedDict
-import os, pathlib
-import torch
 
 from utils.timer import Timer
 from face_utils import load_faceboxes, get_facebox_coords
@@ -69,7 +67,7 @@ while True:
 
     # Crop image to central/top area
     # (optimises foward-pass speed and overall FPS)
-    c1 = frame_height * 0.7  # % Kept from top
+    c1 = frame_height * 0.7  # % to keep from top
     c2 = frame_width * 0.2   # % removed from each side
     y1, y2 = 0, int(c1)
     x1, x2 = int(c2), int(frame_width - c2)
@@ -122,7 +120,7 @@ while True:
     
     # Resize webcam output for dev
     outframe = cv2.resize(frame, None, fx=1.2, fy=1.2)
-    bw = True
+    bw = False
     if bw:
         outframe = cv2.cvtColor(outframe, cv2.COLOR_BGR2GRAY)
 
@@ -133,18 +131,11 @@ while True:
     res = 'NN-res: {}x{}'.format(frame.shape[0], frame.shape[1])
     cv2.putText(outframe, res, (11, 33), font, 0.35, (255, 255, 255), 1, cv2.LINE_AA)
     
-
     # Display headtracking frame
     cv2.imshow('Headtracking', outframe)
-    
-    # Change to HSV and mess with hue value
-    # m_frame = cv2.cvtColor(m_frame, cv2.COLOR_BGR2HSV)
-    # m_frame[:,:,2]
-    # m_frame[:,:,:] = col_index % 255
 
-    m_frame = cv2.resize(m_frame, None, fx=0.5, fy=0.5)
-    four_up = gridifiy_four(m_frame)
-    cv2.imshow('Media Output', four_up)
+    # m_frame = gridifiy_four(m_frame)
+    cv2.imshow('Media Output', m_frame)
 
     k = cv2.waitKey(1) & 0xFF
     if k == 27:  # ESC TO QUIT
@@ -155,6 +146,10 @@ while True:
     elif k == ord('t'):
         print('Key press: T\t Home index increased +12 frames')
         home_index += 12
+    elif k == ord('s'):
+        print('Key press: S\t Spin object 50 frames')
+        index += 50
+        index = index % (m_len - 1)
 
 
 cap.release()
