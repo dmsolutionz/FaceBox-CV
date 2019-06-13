@@ -55,12 +55,13 @@ index = 0
 home_index = 108
 m_len = len(vd)
 col_index = 0
+facetrack_active = True
 
 while True:
     _t['fps'].tic()
     m_frame = vd[index]
     inside_activated = False
-
+    
     # Capture frame and mirror horizontal
     ret, frame = cap.read()
     frame = cv2.flip(frame, 1)
@@ -71,7 +72,7 @@ while True:
     c2 = frame_width * 0.2   # % removed from each side
     y1, y2 = 0, int(c1)
     x1, x2 = int(c2), int(frame_width - c2)
-    frame = cv2.resize(frame[y1:y2, x1:x2], None, fx=0.8, fy=0.8)
+    frame = cv2.resize(frame[y1:y2, x1:x2], None, fx=0.5, fy=0.5)  # Lower to increase FPS (0.5, 0.8, 1.0)
 
     # frame = cv2.resize(frame, None, fx=0.3, fy=0.3)
     dets = get_facebox_coords(frame, net)
@@ -97,7 +98,7 @@ while True:
         # Event condition on highest-score facebox
         if i == 0:
             centroid = int((xmin + xmax) / 2)
-            if (centroid < y2) & (centroid > y1):
+            if (centroid < y2) & (centroid > y1) & facetrack_active:
                 inside_activated = True
                 cv2.circle(frame, (centroid, ymin-25), 10, color=(30,200,30), thickness=-1, lineType=cv2.LINE_AA)
 
@@ -106,9 +107,13 @@ while True:
                 pos = centroid - last_centroid
 
                 if abs(pos) > 0:  # Trigger change of media frame if facebox position moves
-                    index += int(pos*2)
+                    index += int(pos)
                     index = index % (m_len - 1)  # take modulus to allow looping
                     m_frame = vd[index]
+                    
+                    cv2.putText(m_frame, 'o HEADTRACKING ACTIVATED', (40, 40), font, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
+               
+
                 # -----------------------------------
 
             last_centroid = centroid
@@ -118,8 +123,8 @@ while True:
         index = index % (m_len - 1)
         m_frame = vd[index]
     
-    # Resize webcam output for dev
-    outframe = cv2.resize(frame, None, fx=1.2, fy=1.2)
+    # Resize webcam output
+    outframe = cv2.resize(frame, None, fx=2.0, fy=2.0)
     bw = False
     if bw:
         outframe = cv2.cvtColor(outframe, cv2.COLOR_BGR2GRAY)
@@ -150,6 +155,10 @@ while True:
         print('Key press: S\t Spin object 50 frames')
         index += 50
         index = index % (m_len - 1)
+    elif k == 32:  # SPACE TO TOGGLE TRACKING
+        facetrack_active = not facetrack_active
+        print('Key press: SPACE\t Stop/start facetracking')
+
 
 
 cap.release()
