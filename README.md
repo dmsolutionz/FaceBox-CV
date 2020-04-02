@@ -3,11 +3,12 @@
 #### :movie_camera: :radio_button: Computer Vision Control demo using Pytorch and OpenCV.  
 
 Face detection using `FaceBoxes (2017)`, a state-of-the-art method (for 2018) in CPU speed for multi-target facebox detection.   (https://arxiv.org/abs/1708.05234)
-
 <br/>
 
+_Methodology_
+
 ## 1. :page_with_curl: FaceBoxes By Shifeng Zhang (et al.)
-Implementing a great paper by Shifeng Zhang et al. with a face detection model capable of running at 20 FPS on a single CPU core. Perfect for user-interaction control.
+Implementing a great paper by _Shifeng Zhang et al._ with a face detection model capable of running at 20 FPS on a single CPU core. Perfect for user-interaction control.
 
 * Codebase available at https://github.com/sfzhang15/FaceBoxes  
 
@@ -20,13 +21,12 @@ Implementing a great paper by Shifeng Zhang et al. with a face detection model c
 </p>
 
 
-
 ## 2. :female_detective: **Import Model and Predict for Single Face**  
 
   → :notebook_with_decorative_cover: Notebook [01-Faceboxes-Eval-Image.ipynb](notebooks/01-Faceboxes-Eval-Image.ipynb)  
 
 <p align="center">
-  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/plot_facebox.PNG?raw=true" width="400">
+  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/plot_facebox.PNG?raw=true" width="450">
 </p>
 
 ## 3. :male_detective: **Iterate over Predictions for Multiple Targets**  
@@ -34,23 +34,16 @@ Implementing a great paper by Shifeng Zhang et al. with a face detection model c
   → :notebook_with_decorative_cover: Notebook [02-Faceboxes-Refactor.ipynb](notebooks/02-Faceboxes-Refactor.ipynb)  
 
 <p align="center">
-  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/many_faceboxes.PNG?raw=true" width="350">
+  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/many_faceboxes.PNG?raw=true" width="400">
 </p>
 
 ## 3. :male_detective: **OpenCV Control Loop**  
 
-Putting it all together in a control loop, and linking facebox movement with a media asset. The smaller black box on the right shows the webcam output with the detected face highlighted. 
+Putting it all together in a control loop, and linking facebox movement with a media asset. The smaller **black box on the right** shows the webcam output with the detected face outlined. 
 
   → :movie_camera: :radio_button: Code [vision.py](vision.py)  
+<br/>
 
-<p align="center">
-  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/facebox17.gif?raw=true">
-</p>
-
-
-<p align="center">
-  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/facebox18b.gif?raw=true">
-</p>
 
 ##### Quick-Start
 ```sh
