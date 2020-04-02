@@ -69,6 +69,13 @@ $ conda activate facebox-cv
 $ git clone https://github.com/lukexyz/FaceBox-CV.git
 $ cd FaceBox-CV
 $ pip install -r requirements.txt
+```
+Find system specific `pytorch` installation from [pytorch.org](https://pytorch.org/) (dev: `windows|pip|python|cuda=10.1`)
+```
+$ pip install torch===1.4.0 torchvision===0.5.0 -f https://download.pytorch.org/whl/torch_stable.html
+```
+Run FaceBox-CV
+```
 $ python vision.py
 ```  
 
