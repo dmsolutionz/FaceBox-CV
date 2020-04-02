@@ -16,7 +16,7 @@ Implementing a great paper by _Shifeng Zhang et al._ with a face detection model
 </p>
 
 <p align="center">
-  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/faceboxes-paper.PNG?raw=true" width="500">
+  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/faceboxes-paper.PNG?raw=true" width="450">
 </p>
 
 
@@ -58,17 +58,19 @@ Putting it all together in a control loop, and linking facebox movement with a m
   <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/facebox17.gif?raw=true">
 </p>
 <br/>
+
 ##### Quick-Start
 ```sh
 $ conda create -n facebox-cv pip jupyter python=3.6
 $ conda activate facebox-cv
-```
+```  
+
 ```sh
 $ git clone https://github.com/lukexyz/FaceBox-CV.git
 $ cd FaceBox-CV
 $ pip install -r requirements.txt
 $ python vision.py
-```
+```  
 
 ##### Acknowledgements
 * [sfzhang15/FaceBoxes](https://github.com/sfzhang15/FaceBoxes)
