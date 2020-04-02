@@ -13,11 +13,11 @@ Implementing a great paper by _Shifeng Zhang et al._ with a face detection model
 * Codebase available at https://github.com/sfzhang15/FaceBoxes  
 
 <p align="center">
-  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/faceboxes-arxiv.PNG?raw=true" width="650">
+  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/faceboxes-arxiv.PNG?raw=true" width="700">
 </p>
 
 <p align="center">
-  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/faceboxes-paper.PNG?raw=true" width="550">
+  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/faceboxes-paper.PNG?raw=true" width="600">
 </p>
 
 
@@ -37,13 +37,27 @@ Implementing a great paper by _Shifeng Zhang et al._ with a face detection model
   <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/many_faceboxes.PNG?raw=true" width="400">
 </p>
 
-## 3. :male_detective: **OpenCV Control Loop**  
+## 5. :movie_camera: :red_circle: **Realtime Predictions from Webcam Capture** 
 
-Putting it all together in a control loop, and linking facebox movement with a media asset. The smaller **black box on the right** shows the webcam output with the detected face outlined. 
+Output is masked but movement is captured by the bounding box. 
 
-  → :movie_camera: :radio_button: Code [vision.py](vision.py)  
+  → :bookmark_tabs: Refactored into [face_utils.py](face_utils.py)  
+
+
+<p align="center">
+  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/face-tracker.gif?raw=true" width="350">
+</p>
+
+## 6. :movie_camera: :radio_button: **`OpenCV` Control Loop**  
+
+Putting it all together in a control loop, and linking facebox movement with a media asset. The black box on the right shows the webcam output with the detected face outlined. 
+
+  →  :bookmark_tabs: Run [vision.py](vision.py)  
 <br/>
 
+<p align="center">
+  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/facebox17.gif?raw=true">
+</p>
 
 ##### Quick-Start
 ```sh
