@@ -1,13 +1,13 @@
-# Facebox-CV
+# :movie_camera: :radio_button: Facebox-CV
 
-### :movie_camera: :radio_button: Computer Vision Control demo using Pytorch and OpenCV.  
+### Computer Vision Control demo using Pytorch and OpenCV.  
 
-Face detection using `FaceBoxes (2017)`, a state-of-the-art method (for 2018) in CPU speed for multi-target facebox detection. (https://arxiv.org/abs/1708.05234)  
+Face detection using `FaceBoxes (2017)`, a state-of-the-art method (for 2018) in CPU speed for multi-target facebox detection.   (https://arxiv.org/abs/1708.05234)  
 
 <br/>
 
 ## 1. :page_with_curl: FaceBoxes By Shifeng Zhang (et al.)
-
+Implementing a great paper by Shifeng Zhang et al. with a face detection model capable of running at 20 FPS on a single CPU core. Perfect for user-interaction control. 
 
 <p align="center">
   <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/faceboxes-arxiv.PNG?raw=true" width="650">
