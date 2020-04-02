@@ -3,8 +3,7 @@
 #### :movie_camera: :radio_button: Computer Vision Control demo using Pytorch and OpenCV.  
 
 Face detection using `FaceBoxes (2017)`, a state-of-the-art method (for 2018) in CPU speed for multi-target facebox detection.   (https://arxiv.org/abs/1708.05234)
-<br/>
-
+<br/>  
 _Methodology_
 
 ## 1. :page_with_curl: FaceBoxes By Shifeng Zhang (et al.)
@@ -13,11 +12,11 @@ Implementing a great paper by _Shifeng Zhang et al._ with a face detection model
 * Codebase available at https://github.com/sfzhang15/FaceBoxes  
 
 <p align="center">
-  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/faceboxes-arxiv.PNG?raw=true" width="700">
+  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/faceboxes-arxiv.PNG?raw=true" width="650">
 </p>
 
 <p align="center">
-  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/faceboxes-paper.PNG?raw=true" width="600">
+  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/faceboxes-paper.PNG?raw=true" width="500">
 </p>
 
 
@@ -26,7 +25,7 @@ Implementing a great paper by _Shifeng Zhang et al._ with a face detection model
   → :notebook_with_decorative_cover: Notebook [01-Faceboxes-Eval-Image.ipynb](notebooks/01-Faceboxes-Eval-Image.ipynb)  
 
 <p align="center">
-  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/plot_facebox.PNG?raw=true" width="450">
+  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/plot_facebox.PNG?raw=true" width="500">
 </p>
 
 ## 3. :male_detective: **Iterate over Predictions for Multiple Targets**  
@@ -34,7 +33,7 @@ Implementing a great paper by _Shifeng Zhang et al._ with a face detection model
   → :notebook_with_decorative_cover: Notebook [02-Faceboxes-Refactor.ipynb](notebooks/02-Faceboxes-Refactor.ipynb)  
 
 <p align="center">
-  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/many_faceboxes.PNG?raw=true" width="400">
+  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/many_faceboxes.PNG?raw=true" width="450">
 </p>
 
 ## 5. :movie_camera: :red_circle: **Realtime Predictions from Webcam Capture** 
@@ -45,10 +44,10 @@ Output is masked but movement is captured by the bounding box.
 
 
 <p align="center">
-  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/face-tracker.gif?raw=true" width="350">
+  <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/face-tracker.gif?raw=true" width="300">
 </p>
 
-## 6. :movie_camera: :radio_button: **`OpenCV` Control Loop**  
+## 6. :clapper: **`OpenCV` Control Loop**  
 
 Putting it all together in a control loop, and linking facebox movement with a media asset. The black box on the right shows the webcam output with the detected face outlined. 
 
@@ -58,7 +57,7 @@ Putting it all together in a control loop, and linking facebox movement with a m
 <p align="center">
   <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/facebox17.gif?raw=true">
 </p>
-
+<br/>
 ##### Quick-Start
 ```sh
 $ conda create -n facebox-cv pip jupyter python=3.6
