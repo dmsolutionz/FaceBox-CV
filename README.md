@@ -1,13 +1,15 @@
-# :movie_camera: :radio_button: Facebox-CV
+# Facebox-CV
 
-### Computer Vision Control demo using Pytorch and OpenCV.  
+#### :movie_camera: :radio_button: Computer Vision Control demo using Pytorch and OpenCV.  
 
-Face detection using `FaceBoxes (2017)`, a state-of-the-art method (for 2018) in CPU speed for multi-target facebox detection.   (https://arxiv.org/abs/1708.05234)  
+Face detection using `FaceBoxes (2017)`, a state-of-the-art method (for 2018) in CPU speed for multi-target facebox detection.   (https://arxiv.org/abs/1708.05234)
 
 <br/>
 
 ## 1. :page_with_curl: FaceBoxes By Shifeng Zhang (et al.)
-Implementing a great paper by Shifeng Zhang et al. with a face detection model capable of running at 20 FPS on a single CPU core. Perfect for user-interaction control. 
+Implementing a great paper by Shifeng Zhang et al. with a face detection model capable of running at 20 FPS on a single CPU core. Perfect for user-interaction control.
+
+* Codebase available at https://github.com/sfzhang15/FaceBoxes  
 
 <p align="center">
   <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/faceboxes-arxiv.PNG?raw=true" width="650">
@@ -17,7 +19,7 @@ Implementing a great paper by Shifeng Zhang et al. with a face detection model c
   <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/images/faceboxes-paper.PNG?raw=true" width="550">
 </p>
 
-Codebase available at https://github.com/sfzhang15/FaceBoxes
+
 
 ## 2. :female_detective: **Import Model and Predict for Single Face**  
 
@@ -37,7 +39,7 @@ Codebase available at https://github.com/sfzhang15/FaceBoxes
 
 ## 3. :male_detective: **OpenCV Control Loop**  
 
-Putting it all together in a control loop and linking facebox movement with a media asset.
+Putting it all together in a control loop, and linking facebox movement with a media asset. The smaller black box on the right shows the webcam output with the detected face highlighted. 
 
   → :movie_camera: :radio_button: Code [vision.py](vision.py)  
 
@@ -49,6 +51,18 @@ Putting it all together in a control loop and linking facebox movement with a me
 <p align="center">
   <img src="https://github.com/lukexyz/FaceBox-CV/blob/master/facebox18b.gif?raw=true">
 </p>
+
+##### Quick-Start
+```sh
+$ conda create -n facebox-cv pip jupyter python=3.6
+$ conda activate facebox-cv
+```
+```sh
+$ git clone https://github.com/lukexyz/FaceBox-CV.git
+$ cd FaceBox-CV
+$ pip install -r requirements.txt
+$ python vision.py
+```
 
 ##### Acknowledgements
 * [sfzhang15/FaceBoxes](https://github.com/sfzhang15/FaceBoxes)
